@@ -1,6 +1,5 @@
 package dev.freaks.BADProject02.dto.employee;
 
-import dev.freaks.BADProject02.model.constant.Gender;
 import lombok.Data;
 
 import java.util.Date;

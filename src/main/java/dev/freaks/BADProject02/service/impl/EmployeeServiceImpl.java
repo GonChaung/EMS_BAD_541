@@ -3,6 +3,7 @@ package dev.freaks.BADProject02.service.impl;
 import dev.freaks.BADProject02.dto.employee.EmployeeCreateDto;
 import dev.freaks.BADProject02.dto.employee.EmployeeResponseDto;
 import dev.freaks.BADProject02.dto.employee.EmployeeUpdateDto;
+import dev.freaks.BADProject02.dto.employee.TopPaidEmployeeDto;
 import dev.freaks.BADProject02.exception.ResourceNotFoundException;
 import dev.freaks.BADProject02.mapper.EmployeeMapper;
 import dev.freaks.BADProject02.model.Employee;
@@ -99,4 +100,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepository.deleteById(id);
     }
+
+    @Override
+    public List<TopPaidEmployeeDto> getTop10HighestPaidEmployees() {
+        List<Object[]> results = employeeRepository.findTop10HighestPaidEmployeesWithDepartment();
+
+        return results.stream().map(obj -> new TopPaidEmployeeDto(
+                (Integer) obj[0],  // emp_no
+                (String) obj[1],   // first_name
+                (String) obj[2],   // last_name
+                (String) obj[3],   // dept_name
+                ((Number) obj[4]).doubleValue() // Convert Long or BigDecimal safely to Double
+        )).toList();
+    }
+
 }

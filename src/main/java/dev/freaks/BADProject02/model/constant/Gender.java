@@ -24,11 +24,17 @@ public enum Gender {
             return null;
         }
 
-        for (Gender gender : Gender.values()) {
-            if (gender.value.equals(value)) {
-                return gender;
-            }
+        value = value.trim().toUpperCase(); // Normalize input
+
+        switch (value) {
+            case "M":
+            case "MALE":
+                return MALE;
+            case "F":
+            case "FEMALE":
+                return FEMALE;
+            default:
+                throw new IllegalArgumentException("Unknown gender value: " + value);
         }
-        throw new IllegalArgumentException("Unknown gender value: " + value);
     }
 }

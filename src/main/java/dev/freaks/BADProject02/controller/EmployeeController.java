@@ -3,6 +3,7 @@ package dev.freaks.BADProject02.controller;
 import dev.freaks.BADProject02.dto.employee.EmployeeCreateDto;
 import dev.freaks.BADProject02.dto.employee.EmployeeResponseDto;
 import dev.freaks.BADProject02.dto.employee.EmployeeUpdateDto;
+import dev.freaks.BADProject02.dto.employee.TopPaidEmployeeDto;
 import dev.freaks.BADProject02.exception.ResourceNotFoundException;
 import dev.freaks.BADProject02.service.EmployeeService;
 import jakarta.validation.Valid;
@@ -95,5 +96,11 @@ public class EmployeeController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting employee."); // Return 500 for other errors
         }
+    }
+
+    @GetMapping("/top-paid")
+    public ResponseEntity<List<TopPaidEmployeeDto>> getTop10HighestPaidEmployees() {
+        List<TopPaidEmployeeDto> topPaidEmployees = employeeService.getTop10HighestPaidEmployees();
+        return ResponseEntity.ok(topPaidEmployees);
     }
 }
