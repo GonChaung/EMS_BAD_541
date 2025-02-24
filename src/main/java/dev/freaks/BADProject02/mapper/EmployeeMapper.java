@@ -14,6 +14,7 @@ public interface EmployeeMapper extends BaseMapper<Employee, MasterEmployeeDto> 
     Employee toEntity(MasterEmployeeDto masterEmployeeDto);
 
     @Override
+    @Mapping(target = "id", source = "empNo")
     @Mapping(target = "gender", expression = "java(employee.getGender().toString())")
     EmployeeResponseDto toDto(Employee employee);
 }

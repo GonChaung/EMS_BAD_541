@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +15,5 @@ import java.util.Date;
 public class TitleId implements Serializable {
     private Integer empNo;
     private String title;
-    private Date fromDate;
+    private LocalDate fromDate;
 }

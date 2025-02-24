@@ -3,6 +3,7 @@ package dev.freaks.BADProject02.repository;
 import dev.freaks.BADProject02.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,5 +26,16 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(value = "SELECT MAX(emp_no) FROM employees", nativeQuery = true)
     Long findMaxEmpNoWithLock();
+
+    // Fetch the title for an employee based on emp_no
+    @Query(value = """
+        SELECT t.title 
+        FROM titles t
+        WHERE t.emp_no = :empNo 
+        AND t.to_date = '9999-01-01'
+        ORDER BY t.from_date DESC 
+        LIMIT 1
+    """, nativeQuery = true)
+    String findTitleByEmpNo(@Param("empNo") Integer empNo);
 
 }

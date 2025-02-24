@@ -12,5 +12,6 @@ public class TopPaidEmployeeDto {
     private String firstName;
     private String lastName;
     private String deptName;
+    private String title;
     private Double maxSalary;
 }
