@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,8 +21,8 @@ public class Employee {
     @Column(name = "emp_no")
     private Integer empNo;
 
-    @Column(name = "birth_date")
-    private Date birthDate;
+    @Column(name = "birth_date", columnDefinition = "DATE")
+    private LocalDate birthDate;
 
     @Column(name = "first_name")
     private String firstName;
@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "gender", columnDefinition = "ENUM('M', 'F')")
     private Gender gender;
 
-    @Column(name = "hire_date")
-    private Date hireDate;
+    @Column(name = "hire_date", columnDefinition = "DATE")
+    private LocalDate hireDate;
 }
 

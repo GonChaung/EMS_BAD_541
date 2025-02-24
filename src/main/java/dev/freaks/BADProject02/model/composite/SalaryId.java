@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Embeddable
 @Data
@@ -14,5 +15,5 @@ import java.util.Date;
 @AllArgsConstructor
 public class SalaryId implements Serializable {
     private Integer empNo;
-    private Date fromDate;
+    private LocalDate fromDate;
 }

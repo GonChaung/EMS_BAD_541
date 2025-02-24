@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "dept_manager")
@@ -24,11 +24,11 @@ public class DeptManager {
     @Column(name = "dept_no", columnDefinition = "CHAR(4)")
     private String deptNo;
 
-    @Column(name = "from_date")
-    private Date fromDate;
+    @Column(name = "from_date", columnDefinition = "DATE")
+    private LocalDate fromDate; // FIXED
 
-    @Column(name = "to_date")
-    private Date toDate;
+    @Column(name = "to_date", columnDefinition = "DATE")
+    private LocalDate toDate; // FIXED
 
     @ManyToOne
     @JoinColumn(name = "emp_no", insertable = false, updatable = false)

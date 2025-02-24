@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -55,6 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
+
     @Override
     public EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateDto employeeUpdateDto) {
         Employee employee = employeeRepository.findById(id)
@@ -86,12 +88,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee.setFirstName(employeeUpdateDto.getFirstName());
         employee.setLastName(employeeUpdateDto.getLastName());
-        employee.setBirthDate(employeeUpdateDto.getBirthDate());
-        employee.setHireDate(employeeUpdateDto.getHireDate());
+
+        // Convert Date to LocalDate for birthDate and hireDate
+        if (employeeUpdateDto.getBirthDate() != null) {
+            employee.setBirthDate(employeeUpdateDto.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
+
+        if (employeeUpdateDto.getHireDate() != null) {
+            employee.setHireDate(employeeUpdateDto.getHireDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        }
 
         Employee updatedEmployee = employeeRepository.save(employee);
         return employeeMapper.toDto(updatedEmployee);
     }
+
+
     @Override
     public void deleteEmployee(Long id) {
         if (!employeeRepository.existsById(id)) {
