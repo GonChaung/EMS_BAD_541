@@ -5,13 +5,15 @@ import dev.freaks.BADProject02.dto.employee.EmployeeResponseDto;
 import dev.freaks.BADProject02.dto.employee.EmployeeUpdateDto;
 import dev.freaks.BADProject02.dto.employee.TopPaidEmployeeDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface EmployeeService {
     List<EmployeeResponseDto> getAllEmployees();
     EmployeeResponseDto createEmployee(EmployeeCreateDto employeeCreateDto);
-    EmployeeResponseDto getEmployeeById(Long id);
-    EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateDto employeeUpdateDto);
-    void deleteEmployee(Long id);
+    EmployeeResponseDto getEmployeeById(Integer id);
+    EmployeeResponseDto updateEmployee(Integer id, EmployeeUpdateDto employeeUpdateDto);
+    void deleteEmployee(Integer id);
     List<TopPaidEmployeeDto> getTop10HighestPaidEmployees();
+    String resignEmployee(Integer empNo,  LocalDate resignDate);
 }

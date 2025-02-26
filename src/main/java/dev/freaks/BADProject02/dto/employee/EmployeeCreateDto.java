@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class EmployeeCreateDto extends MasterEmployeeDto {
-    private String departmentNo; // The dept_no that links to the department
-    private String title; // Title of the employee
+    private String departmentNo;
+    private String title;
     private Integer salary;
 }

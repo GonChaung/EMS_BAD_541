@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = """
         SELECT e.emp_no, e.first_name, e.last_name, d.dept_name, MAX(s.salary) AS max_salary
         FROM employees e
@@ -27,7 +27,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query(value = "SELECT MAX(emp_no) FROM employees", nativeQuery = true)
     Long findMaxEmpNoWithLock();
 
-    // Fetch the title for an employee based on emp_no
     @Query(value = """
         SELECT t.title 
         FROM titles t
@@ -37,5 +36,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         LIMIT 1
     """, nativeQuery = true)
     String findTitleByEmpNo(@Param("empNo") Integer empNo);
+
+    Optional<Employee> findByEmpNo(Integer empNo);
 
 }

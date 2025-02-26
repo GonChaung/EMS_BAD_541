@@ -22,15 +22,23 @@ public class Salary {
 
     @Id
     @Column(name = "from_date", columnDefinition = "DATE")
-    private LocalDate fromDate; // FIXED
+    private LocalDate fromDate;
 
     @Column(name = "salary")
     private Integer salary;
 
     @Column(name = "to_date", columnDefinition = "DATE")
-    private LocalDate toDate; // FIXED
+    private LocalDate toDate;
 
     @ManyToOne
     @JoinColumn(name = "emp_no", insertable = false, updatable = false)
     private Employee employee;
+
+    public Salary(Employee employee, LocalDate fromDate, Integer salary, LocalDate toDate) {
+        this.empNo = employee.getEmpNo();
+        this.employee = employee;
+        this.fromDate = fromDate;
+        this.salary = salary;
+        this.toDate = toDate;
+    }
 }
