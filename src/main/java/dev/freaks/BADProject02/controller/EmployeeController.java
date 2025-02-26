@@ -41,7 +41,7 @@ public class EmployeeController {
         EmployeeResponseDto employeeDto = employeeService.createEmployee(employeeCreateDto);
         URI location = UriComponentsBuilder
                 .fromUriString("/employees/{id}")
-                .buildAndExpand(employeeDto.getId())
+                .buildAndExpand(employeeDto.getEmpNo())
                 .toUri();
         return ResponseEntity.created(location).body(employeeDto); // Return 201 Created
     }
@@ -61,7 +61,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeResponseDto> getEmployeeById(@PathVariable Integer id) {
         try {
             EmployeeResponseDto employeeDto = employeeService.getEmployeeById(id);
             System.out.println(employeeDto.getGender());
@@ -73,7 +73,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponseDto> updateEmployee(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @RequestBody @Valid EmployeeUpdateDto employeeUpdateDto) {
         if (employeeUpdateDto == null) {
             return ResponseEntity.badRequest().build(); // Return 400 if request body is invalid
@@ -87,7 +87,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEmployee(@PathVariable Integer id) {
         try {
             employeeService.deleteEmployee(id);
             return ResponseEntity.ok("Employee with ID " + id + " has been deleted."); // Return 200 with success message

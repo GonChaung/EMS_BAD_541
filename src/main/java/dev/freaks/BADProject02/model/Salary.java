@@ -33,4 +33,13 @@ public class Salary {
     @ManyToOne
     @JoinColumn(name = "emp_no", insertable = false, updatable = false)
     private Employee employee;
+
+    public Salary(Employee employee, LocalDate fromDate, Integer salary, LocalDate toDate) {
+        this.empNo = employee.getEmpNo();  // Extract empNo from Employee
+        this.employee = employee;
+        this.fromDate = fromDate;
+        this.salary = salary;
+        this.toDate = toDate;
+    }
+
 }

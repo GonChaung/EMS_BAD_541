@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -36,5 +37,21 @@ public class Employee {
 
     @Column(name = "hire_date", columnDefinition = "DATE")
     private LocalDate hireDate;
+
+    // Fetch department info
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @OrderBy("fromDate DESC")
+    private List<DeptEmp> deptEmpList;
+
+    // Fetch title info
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @OrderBy("fromDate DESC")
+    private List<Title> titleList;
+
+    // Fetch salary info
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @OrderBy("fromDate DESC")
+    private List<Salary> salaryList;
 }
+
 

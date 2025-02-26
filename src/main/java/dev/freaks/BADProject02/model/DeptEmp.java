@@ -39,12 +39,13 @@ public class DeptEmp {
     @JoinColumn(name = "dept_no", referencedColumnName = "dept_no", insertable = false, updatable = false)
     private Department department;
 
-    public DeptEmp(DeptEmpId deptEmpId, LocalDate fromDate, LocalDate toDate, Employee employee, Department department) {
-        this.empNo = deptEmpId.getEmpNo();
-        this.deptNo = deptEmpId.getDeptNo();
-        this.fromDate = fromDate;
-        this.toDate = toDate;
+    // ✅ Correct Constructor
+    public DeptEmp(Employee employee, Department department, LocalDate fromDate, LocalDate toDate) {
+        this.empNo = employee.getEmpNo();  // Set empNo directly
+        this.deptNo = department.getDeptNo();  // Set deptNo directly
         this.employee = employee;
         this.department = department;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
     }
 }
