@@ -1,9 +1,6 @@
 package dev.freaks.BADProject02.controller;
 
-import dev.freaks.BADProject02.dto.employee.EmployeeCreateDto;
-import dev.freaks.BADProject02.dto.employee.EmployeeResponseDto;
-import dev.freaks.BADProject02.dto.employee.EmployeeUpdateDto;
-import dev.freaks.BADProject02.dto.employee.TopPaidEmployeeDto;
+import dev.freaks.BADProject02.dto.employee.*;
 import dev.freaks.BADProject02.exception.ResourceNotFoundException;
 import dev.freaks.BADProject02.service.EmployeeService;
 import jakarta.validation.Valid;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -102,5 +100,18 @@ public class EmployeeController {
     public ResponseEntity<List<TopPaidEmployeeDto>> getTop10HighestPaidEmployees() {
         List<TopPaidEmployeeDto> topPaidEmployees = employeeService.getTop10HighestPaidEmployees();
         return ResponseEntity.ok(topPaidEmployees);
+    }
+
+    @PostMapping("/{empNo}/resign")
+    public ResponseEntity<String> resignEmployee(
+            @PathVariable Integer empNo,
+            @RequestBody(required = false) ResignationRequest resignationRequest) {
+
+        LocalDate resignDate = resignationRequest != null && resignationRequest.getResignDate() != null
+                ? resignationRequest.getResignDate()
+                : LocalDate.now();
+
+        String message = employeeService.resignEmployee(empNo, resignDate);
+        return ResponseEntity.ok(message);
     }
 }

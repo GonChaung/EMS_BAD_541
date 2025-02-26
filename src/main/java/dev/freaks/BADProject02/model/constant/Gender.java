@@ -12,20 +12,16 @@ public enum Gender {
 
     private final String value;
 
-    // This will be used when persisting to the database
     @Override
     public String toString() {
         return this.value;
     }
 
-    // This will be used when reading from the database
     public static Gender fromString(String value) {
         if (value == null) {
             return null;
         }
-
-        value = value.trim().toUpperCase(); // Normalize input
-
+        value = value.trim().toUpperCase();
         switch (value) {
             case "M":
             case "MALE":

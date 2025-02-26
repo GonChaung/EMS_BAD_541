@@ -27,7 +27,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "SELECT MAX(emp_no) FROM employees", nativeQuery = true)
     Long findMaxEmpNoWithLock();
 
-    // Fetch the title for an employee based on emp_no
     @Query(value = """
         SELECT t.title 
         FROM titles t
@@ -38,8 +37,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     """, nativeQuery = true)
     String findTitleByEmpNo(@Param("empNo") Integer empNo);
 
-
-    // Custom query to fetch employee by empNo
     Optional<Employee> findByEmpNo(Integer empNo);
 
 }

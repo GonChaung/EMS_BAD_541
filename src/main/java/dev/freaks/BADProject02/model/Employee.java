@@ -38,19 +38,16 @@ public class Employee {
     @Column(name = "hire_date", columnDefinition = "DATE")
     private LocalDate hireDate;
 
-    // Fetch department info
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    @OrderBy("fromDate DESC")
+    @OrderBy("toDate DESC")
     private List<DeptEmp> deptEmpList;
 
-    // Fetch title info
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    @OrderBy("fromDate DESC")
+    @OrderBy("toDate DESC")
     private List<Title> titleList;
 
-    // Fetch salary info
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    @OrderBy("fromDate DESC")
+    @OrderBy("toDate DESC")
     private List<Salary> salaryList;
 }
 

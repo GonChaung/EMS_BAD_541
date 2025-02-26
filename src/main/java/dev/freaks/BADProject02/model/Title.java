@@ -26,17 +26,17 @@ public class Title {
 
     @Id
     @Column(name = "from_date", columnDefinition = "DATE")
-    private LocalDate fromDate; // FIXED
+    private LocalDate fromDate;
 
     @Column(name = "to_date", columnDefinition = "DATE")
-    private LocalDate toDate; // FIXED
+    private LocalDate toDate;
 
     @ManyToOne
     @JoinColumn(name = "emp_no", insertable = false, updatable = false)
     private Employee employee;
 
     public Title(Employee employee, String title, LocalDate fromDate, LocalDate toDate) {
-        this.empNo = employee.getEmpNo();  // Extract empNo from Employee
+        this.empNo = employee.getEmpNo();
         this.employee = employee;
         this.title = title;
         this.fromDate = fromDate;

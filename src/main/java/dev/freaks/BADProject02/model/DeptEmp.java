@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -39,10 +38,9 @@ public class DeptEmp {
     @JoinColumn(name = "dept_no", referencedColumnName = "dept_no", insertable = false, updatable = false)
     private Department department;
 
-    // ✅ Correct Constructor
     public DeptEmp(Employee employee, Department department, LocalDate fromDate, LocalDate toDate) {
-        this.empNo = employee.getEmpNo();  // Set empNo directly
-        this.deptNo = department.getDeptNo();  // Set deptNo directly
+        this.empNo = employee.getEmpNo();
+        this.deptNo = department.getDeptNo();
         this.employee = employee;
         this.department = department;
         this.fromDate = fromDate;

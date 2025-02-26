@@ -13,7 +13,6 @@ public class EmployeeResponseDto {
     private Integer salary;
     private String gender;  // Add gender field
 
-    // Constructor to initialize from Employee entity
     public EmployeeResponseDto(Employee employee) {
         if (employee != null) {
             this.empNo = employee.getEmpNo();
@@ -22,11 +21,9 @@ public class EmployeeResponseDto {
             this.departmentNo = getLatestDepartment(employee);
             this.title = getLatestTitle(employee);
             this.salary = getLatestSalary(employee);
-            this.gender = employee.getGender() != null ? employee.getGender().toString() : null; // Ensure gender is mapped
+            this.gender = employee.getGender() != null ? employee.getGender().toString() : null;
         }
-        // If employee is null, initialize defaults or handle the error accordingly
         else {
-            // Optionally, set defaults or throw an exception depending on your requirements
             this.empNo = null;
             this.firstName = null;
             this.lastName = null;
@@ -37,8 +34,6 @@ public class EmployeeResponseDto {
         }
     }
 
-
-    // Methods to get the latest department, title, and salary
     private String getLatestDepartment(Employee employee) {
         return employee.getDeptEmpList() != null && !employee.getDeptEmpList().isEmpty() ?
                 employee.getDeptEmpList().get(0).getDeptNo() : null;
