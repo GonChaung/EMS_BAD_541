@@ -14,7 +14,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("BAD_541")
-                        .version("1.0")
+                        .version("1.1")
                         .description("API Documentation for the Project")
                         .contact(new Contact().name("Gon Chaung").email("gonChaung.dev@gmail.com")));
     }
