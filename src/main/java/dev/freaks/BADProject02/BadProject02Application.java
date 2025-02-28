@@ -2,8 +2,10 @@ package dev.freaks.BADProject02;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
+@EnableCaching
 public class BadProject02Application {
 	public static void main(String[] args) {
 		SpringApplication.run(BadProject02Application.class, args);
