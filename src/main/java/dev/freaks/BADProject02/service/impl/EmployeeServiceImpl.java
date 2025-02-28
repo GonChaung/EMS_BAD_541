@@ -12,6 +12,9 @@ import dev.freaks.BADProject02.model.constant.Gender;
 import dev.freaks.BADProject02.repository.*;
 import dev.freaks.BADProject02.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,15 +33,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final SalaryRepository salaryRepository;
     private final TitleRepository titleRepository;
     private final DeptEmpRepository deptEmpRepository;
+    private final RedisService redisService;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, DepartmentRepository departmentRepository, SalaryRepository salaryRepository, TitleRepository titleRepository, DeptEmpRepository deptEmpRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, DepartmentRepository departmentRepository, SalaryRepository salaryRepository, TitleRepository titleRepository, DeptEmpRepository deptEmpRepository, RedisService redisService) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
         this.departmentRepository = departmentRepository;
         this.salaryRepository = salaryRepository;
         this.titleRepository = titleRepository;
         this.deptEmpRepository = deptEmpRepository;
+        this.redisService = redisService;
+    }
+
+    @Async // Runs this method asynchronously
+    public void asyncTopPaidEmployees(){
+        redisService.evictAndRefreshCache();
     }
 
 
@@ -58,6 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setTitleList(new ArrayList<>());
         employee.setSalaryList(new ArrayList<>());
         employee = employeeRepository.save(employee);
+
         if (employeeCreateDto.getDepartmentNo() != null) {
             Department department = departmentRepository.findById(employeeCreateDto.getDepartmentNo())
                     .orElseThrow(() -> new RuntimeException("Department not found"));
@@ -91,6 +102,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             );
             salaryRepository.save(salary);
             employee.getSalaryList().add(salary);
+
         }
 
         EmployeeResponseDto responseDto = employeeMapper.toDto(employee);
@@ -98,10 +110,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         responseDto.setTitle(employeeCreateDto.getTitle());
         responseDto.setSalary(employeeCreateDto.getSalary());
 
+        // Run cache refresh asynchronously
+        this.redisService.evictAndRefreshCache();
+
         return responseDto;
     }
 
     @Override
+    @Cacheable(value = "employees", key = "#id")
     public EmployeeResponseDto getEmployeeById(Integer id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
@@ -130,6 +146,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             updateEmployeeSalary(employee, employeeUpdateDto.getSalary());
         }
         employee = employeeRepository.save(employee);
+
+        // Run cache refresh asynchronously
+        this.asyncTopPaidEmployees();
+
         return new EmployeeResponseDto(employee);  // Should work now
     }
 
@@ -156,7 +176,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Cacheable(value = "employees", key = "'top-paid'")
     public List<TopPaidEmployeeDto> getTop10HighestPaidEmployees() {
+        System.out.println("Employee Fetching.....");
         List<Object[]> results = employeeRepository.findTop10HighestPaidEmployeesWithDepartment();
         return results.stream().map(obj -> {
             Integer empNo = (Integer) obj[0];

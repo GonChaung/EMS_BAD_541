@@ -3,8 +3,11 @@ package dev.freaks.BADProject02.dto.employee;
 import dev.freaks.BADProject02.model.Employee;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class EmployeeResponseDto {
+public class EmployeeResponseDto  implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer empNo;
     private String firstName;
     private String lastName;
