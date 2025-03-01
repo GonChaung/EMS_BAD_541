@@ -102,17 +102,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             );
             salaryRepository.save(salary);
             employee.getSalaryList().add(salary);
-
         }
-
         EmployeeResponseDto responseDto = employeeMapper.toDto(employee);
         responseDto.setDepartmentNo(employeeCreateDto.getDepartmentNo());
         responseDto.setTitle(employeeCreateDto.getTitle());
         responseDto.setSalary(employeeCreateDto.getSalary());
-
-        // Run cache refresh asynchronously
         this.redisService.evictAndRefreshCache();
-
         return responseDto;
     }
 
@@ -171,7 +166,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (!employeeRepository.existsById(id)) {
             throw new ResourceNotFoundException("Employee not found with id " + id);
         }
-
+        this.asyncTopPaidEmployees();
         employeeRepository.deleteById(id);
     }
 
@@ -217,8 +212,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         DeptEmp newDeptEmp = new DeptEmp(employee, newDepartment, LocalDate.now(), LocalDate.of(9999, 1, 1));
         deptEmpRepository.save(newDeptEmp);
     }
-
-
 
     @Transactional
     public void updateEmployeeTitle(Employee employee, String newTitle) {
