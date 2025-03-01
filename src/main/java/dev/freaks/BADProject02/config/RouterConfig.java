@@ -9,18 +9,20 @@ import java.util.function.Function;
 
 @Configuration
 public class RouterConfig {
+
     @Bean
     public Function<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> router() {
         return request -> {
             String body = request.getBody();
             APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+            response.setStatusCode(200);
+            response.setIsBase64Encoded(false);
+
             if (body != null && !body.isEmpty()) {
                 response.setBody("Processed request with body: " + body);
             } else {
                 response.setBody("Processed request with no body");
             }
-            response.setStatusCode(200);
-            response.setIsBase64Encoded(false);
             return response;
         };
     }

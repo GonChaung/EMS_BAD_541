@@ -1,8 +1,12 @@
 package dev.freaks.BADProject02;
 
-import org.springframework.cloud.function.adapter.aws.SpringBootApiGatewayRequestHandler;
+import dev.freaks.BADProject02.config.RouterConfig;
+import org.springframework.cloud.function.adapter.aws.SpringBootRequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
-public class AwsLambdaHandler extends SpringBootApiGatewayRequestHandler {
-    // No need to override any methods
-    // SpringBootApiGatewayRequestHandler already implements the correct handler method
+public class AwsLambdaHandler extends SpringBootRequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+    public AwsLambdaHandler() {
+        super(RouterConfig.class); // Pass the class where the "router" function is defined
+    }
 }

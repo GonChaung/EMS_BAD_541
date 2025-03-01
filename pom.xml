@@ -128,28 +128,20 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<layers>
+					<enabled>false</enabled>
+					</layers>
 				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<createDependencyReducedPom>false</createDependencyReducedPom>
-					<shadedArtifactAttached>true</shadedArtifactAttached>
-					<shadedClassifierName>aws</shadedClassifierName>
-				</configuration>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -160,5 +152,6 @@
 				</executions>
 			</plugin>
 		</plugins>
+
 	</build>
 </project>

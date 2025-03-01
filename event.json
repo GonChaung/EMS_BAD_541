@@ -1,0 +1,11 @@
+{
+  "httpMethod": "GET",
+  "path": "/api/v1/employees",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer your_token"
+  },
+  "queryStringParameters": {
+    "department": "Sales"
+  }
+}
