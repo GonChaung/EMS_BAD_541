@@ -141,7 +141,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             updateEmployeeSalary(employee, employeeUpdateDto.getSalary());
         }
         employee = employeeRepository.save(employee);
-
         // Run cache refresh asynchronously
         this.asyncTopPaidEmployees();
 
@@ -230,8 +229,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             titleRepository.save(title);
             employee.getTitleList().add(title);
         } else {
-            // If title exists, update it by creating a new record with a new fromDate
-            // Create a new title entity to avoid changing the primary key
             Title newTitleEntity = new Title(
                     employee,
                     newTitle,
@@ -242,8 +239,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.getTitleList().add(newTitleEntity);
         }
     }
-
-
 
     @Transactional
     private void updateEmployeeSalary(Employee employee, Integer newSalary) {

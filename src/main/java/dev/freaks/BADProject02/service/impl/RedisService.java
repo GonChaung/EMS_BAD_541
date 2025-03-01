@@ -2,7 +2,6 @@ package dev.freaks.BADProject02.service.impl;
 
 import dev.freaks.BADProject02.dto.employee.TopPaidEmployeeDto;
 import dev.freaks.BADProject02.repository.EmployeeRepository;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -20,14 +19,10 @@ public class RedisService {
     }
 
     @CachePut(value = "employees", key = "'top-paid'")
-    @Async // Runs asynchronously
+    @Async
     public CompletableFuture<List<TopPaidEmployeeDto>> evictAndRefreshCache() {
         System.out.println("Evicting and Refreshing Top Paid Employees Cache...");
-
-        // Simulate fetching data from the repository
         List<Object[]> results = employeeRepository.findTop10HighestPaidEmployeesWithDepartment();
-
-        // Process the results and map to DTOs
         List<TopPaidEmployeeDto> topPaidEmployees = results.stream().map(obj -> {
             Integer empNo = (Integer) obj[0];
             String firstName = (String) obj[1];
@@ -37,21 +32,12 @@ public class RedisService {
             String title = getTitleForEmployee(empNo);
             return new TopPaidEmployeeDto(empNo, firstName, lastName, deptName, title, maxSalary);
         }).collect(Collectors.toList());
-
-        // Return the result wrapped in CompletableFuture, cache will be updated by @CachePut
         return updateCache();
     }
-
-    // This method is called to update the cache after eviction
     @CachePut(value = "employees", key = "'top-paid'")
     public CompletableFuture<List<TopPaidEmployeeDto>> updateCache() {
-        // Simulating cache update, it returns the list in a CompletableFuture
         System.out.println("Evicting and Refreshing Top Paid Employees Cache...");
-
-        // Simulate fetching data from the repository
         List<Object[]> results = employeeRepository.findTop10HighestPaidEmployeesWithDepartment();
-
-        // Process the results and map to DTOs
         List<TopPaidEmployeeDto> topPaidEmployees = results.stream().map(obj -> {
             Integer empNo = (Integer) obj[0];
             String firstName = (String) obj[1];
