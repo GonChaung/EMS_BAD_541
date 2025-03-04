@@ -1,14 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
 Resources:
   LambdaFunction:
-    Type: AWS::Serverless::Function
+    Type: AWS::Lambda::Function
     Properties:
-      Handler: dev.freaks.BADProject02.SimpleLambdaHandler:: # Use the new handler
+      Handler: dev.freaks.BADProject02.SimpleLambdaHandler::handleRequest  # Correct handler class
+      Role: arn:aws:iam::account-id:role/lambda-role  # Update with your role ARN
+      FunctionName: MyLambdaFunction
+      CodeUri: target/BADProject02-0.0.1-SNAPSHOT-aws.jar  # Path to your JAR
       Runtime: java17
-      CodeUri: target/BADProject02-0.0.1-SNAPSHOT-aws.jar  # Path to your JAR file
       MemorySize: 512
-      Timeout: 10
-      Environment:
-        Variables:
-          AWS_REGION: us-west-2
+      Timeout: 15

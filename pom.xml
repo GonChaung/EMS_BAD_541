@@ -111,6 +111,7 @@
 
 	<build>
 		<plugins>
+			<!-- Compiler plugin for annotation processing -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -129,16 +130,18 @@
 				</configuration>
 			</plugin>
 
+			<!-- Spring Boot plugin to package the application -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<layers>
-					<enabled>false</enabled>
+						<enabled>false</enabled> <!-- Disable layering for AWS Lambda -->
 					</layers>
 				</configuration>
 			</plugin>
 
+			<!-- Shade plugin to bundle the Lambda function with dependencies -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -148,10 +151,38 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<finalName>BADProject02-0.0.1-SNAPSHOT-aws</finalName> <!-- The final JAR name -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- AWS Lambda Maven Plugin (optional but useful for Lambda) -->
+			<plugin>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-lambda-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<handler>dev.freaks.BADProject02.SimpleLambdaHandler</handler> <!-- Your Lambda handler class -->
+				</configuration>
+			</plugin>
+
+			<!-- AWS Lambda Java Build Tools Plugin -->
+			<plugin>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-lambda-java-build-tools</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>package</goal> <!-- This goal packages your Lambda function -->
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
-
 	</build>
+
 </project>
